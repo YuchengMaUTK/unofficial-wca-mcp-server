@@ -16,8 +16,8 @@ This unofficial WCA MCP Server enables AI assistants to answer questions about s
 ## Installation
 
 ```bash
-git clone https://github.com/YuchengMaUTK/wca-mcp-server.git
-cd wca-mcp-server
+git clone https://github.com/YuchengMaUTK/unofficial-wca-mcp-server.git
+cd unofficial-wca-mcp-server
 pip install -e .
 ```
 

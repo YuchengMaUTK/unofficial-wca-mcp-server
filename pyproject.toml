@@ -49,10 +49,10 @@ dev = [
 wca-mcp-server = "wca_mcp_server.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/YuchengMaUTK/wca-mcp-server"
-Repository = "https://github.com/YuchengMaUTK/wca-mcp-server"
-Issues = "https://github.com/YuchengMaUTK/wca-mcp-server/issues"
-Documentation = "https://github.com/YuchengMaUTK/wca-mcp-server#readme"
+Homepage = "https://github.com/YuchengMaUTK/unofficial-wca-mcp-server"
+Repository = "https://github.com/YuchengMaUTK/unofficial-wca-mcp-server"
+Issues = "https://github.com/YuchengMaUTK/unofficial-wca-mcp-server/issues"
+Documentation = "https://github.com/YuchengMaUTK/unofficial-wca-mcp-server#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/wca_mcp_server"]
