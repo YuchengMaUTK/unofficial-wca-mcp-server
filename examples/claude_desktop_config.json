@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "wca": {
+      "command": "wca-mcp-server",
+      "env": {
+        "WCA_CACHE_TTL": "3600",
+        "WCA_LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
