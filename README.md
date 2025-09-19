@@ -40,23 +40,28 @@ Add to your MCP client configuration:
 
 ### 🏆 Query World Records and Rankings
 **User (English)**: "What's the current 3x3x3 world record?"
+
 **AI Response**: The current 3x3x3 world record is 3.05 seconds, held by Xuanyi Geng (耿暄一) from China, set at the Shenzhen Cubing 10th Anniversary 2024 competition.
 
 ### 👤 Get Competitor Profiles  
 **User (中文)**: "告诉我世界纪录保持者的信息"
+
 **AI Response**: 耿暄一（WCA ID: 2023GENG02）来自中国，保持多项纪录。他参加了48场比赛，在三阶、二阶和金字塔等项目中获得15枚金牌、8枚银牌和4枚铜牌。
 
 ### 🗓️ Find Competitions by Date
 **User (Español)**: "¿Qué competencias hay el 18 de enero de 2025?"
+
 **AI Response**: Hay 31 competencias programadas para el 18 de enero de 2025, incluyendo eventos en Australia (Geelong Summer 2025), Brasil (Cubo Carioca 2025), Alemania (Franconia Winter 2025), Corea del Sur (Sejong Winter 2025), y muchos otros países.
 
 ### 🎯 Search by Event Type
 **User (English)**: "Find competitions with 3x3x3 Blindfolded events"
+
 **AI Response**: Here are upcoming competitions featuring 3x3x3 Blindfolded, including competition dates, locations, and registration details.
 
 ### 🏅 Championship Information
 **User (中文)**: "上一届世界锦标赛是什么时候？"
-**AI Response**: 最近一届世界锦标赛的详细信息，包括地点、日期、获奖者和破纪录表现。
+
+**AI Response**: 上一届世界锦标赛是2025年WCA世界锦标赛，于2025年7月3-6日在美国西雅图会展中心举行。上上届是2023年WCA世界锦标赛，于2023年8月12-15日在韩国仁川的松道会展中心举办。
 
 ## Available Tools
 
@@ -76,3 +81,10 @@ Add to your MCP client configuration:
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- **[World Cube Association (WCA)](https://www.worldcubeassociation.org/)** - For maintaining the official speedcubing database and providing competition data
+- **[Unofficial WCA API](https://wca-rest-api.robiningelbrecht.be/#section/Introduction)** - For enabling programmatic access to WCA data through their unofficial API endpoints
+- **[Model Context Protocol (MCP)](https://modelcontextprotocol.io/)** - For the fast and efficient protocol that enables seamless AI assistant integration
+- **[FastMCP](https://gofastmcp.com/getting-started/welcome)** - For providing the framework to build MCP servers efficiently
