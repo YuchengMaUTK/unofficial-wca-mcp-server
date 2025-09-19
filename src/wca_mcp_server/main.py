@@ -86,22 +86,109 @@ async def get_wca_continents() -> List[Dict[str, Any]]:
 
 
 @mcp.tool()
-async def get_person_by_wca_id(wca_id: str) -> Dict[str, Any]:
+async def get_person_by_wca_id(
+    wca_id: str,
+    competition_id: str = None,
+    include_competition_results: bool = False,
+    include_personal_records: bool = True,
+    include_rankings: bool = True,
+    include_medals: bool = True,
+    max_recent_competitions: int = 5
+) -> Dict[str, Any]:
     """Get detailed information about a specific WCA competitor by their WCA ID.
     
-    Returns comprehensive information about a speedcuber including their
-    personal bests, rankings, medal counts, and competition history.
+    Returns information about a speedcuber with configurable detail levels.
+    By default, returns basic info, personal records, rankings, and medals without
+    the verbose competition results that can make responses extremely long.
     
     Args:
         wca_id: WCA ID of the person (e.g., "2003SEAR02")
+        competition_id: Optional competition ID to get results from a specific competition (e.g., "WC2023")
+        include_competition_results: Include detailed competition results (default: False)
+        include_personal_records: Include personal best records (default: True)
+        include_rankings: Include current world/continental/national rankings (default: True)
+        include_medals: Include medal counts (default: True)
+        max_recent_competitions: If including results, limit to N most recent competitions (default: 5)
         
     Returns:
-        Detailed person information including records and achievements
+        Filtered person information based on the specified parameters
     """
     try:
         async with WCAAPIClient() as client:
             person_data = await client.get_person(wca_id)
-            return person_data
+            
+            # Create filtered response
+            filtered_data = {
+                "id": person_data.get("id"),
+                "name": person_data.get("name"),
+                "slug": person_data.get("slug"),
+                "country": person_data.get("country"),
+                "numberOfCompetitions": person_data.get("numberOfCompetitions"),
+                "numberOfChampionships": person_data.get("numberOfChampionships"),
+            }
+            
+            # Add competition IDs list (always include as it's lightweight)
+            if "competitionIds" in person_data:
+                filtered_data["competitionIds"] = person_data["competitionIds"]
+            if "championshipIds" in person_data:
+                filtered_data["championshipIds"] = person_data["championshipIds"]
+            
+            # Add personal records if requested
+            if include_personal_records and "records" in person_data:
+                filtered_data["records"] = person_data["records"]
+            
+            # Add rankings if requested
+            if include_rankings and "rank" in person_data:
+                filtered_data["rank"] = person_data["rank"]
+            
+            # Add medals if requested
+            if include_medals and "medals" in person_data:
+                filtered_data["medals"] = person_data["medals"]
+            
+            # Handle specific competition results if competition_id is provided
+            if competition_id:
+                competition_ids = person_data.get("competitionIds", [])
+                results = person_data.get("results", {})
+                
+                if competition_id in competition_ids:
+                    # Person participated in this competition
+                    if competition_id in results:
+                        # Results data is available
+                        filtered_data["results"] = {competition_id: results[competition_id]}
+                        filtered_data["_results_note"] = f"Showing results from competition: {competition_id}"
+                    else:
+                        # Person participated but no results data available
+                        filtered_data["results"] = {}
+                        filtered_data["_results_note"] = f"Person participated in {competition_id} but no results data available"
+                else:
+                    # Person did not participate in this competition
+                    filtered_data["results"] = {}
+                    filtered_data["_results_note"] = f"Person did not participate in competition: {competition_id}"
+            
+            # Add competition results if requested (with optional limiting)
+            elif include_competition_results and "results" in person_data:
+                results = person_data["results"]
+                if max_recent_competitions and max_recent_competitions > 0:
+                    # Get the most recent competitions (competition IDs are typically in chronological order)
+                    competition_ids = person_data.get("competitionIds", [])
+                    recent_competition_ids = competition_ids[-max_recent_competitions:] if competition_ids else []
+                    
+                    # Filter results to only include recent competitions
+                    filtered_results = {
+                        comp_id: results[comp_id] 
+                        for comp_id in recent_competition_ids 
+                        if comp_id in results
+                    }
+                    filtered_data["results"] = filtered_results
+                    filtered_data["_results_note"] = f"Showing results from {len(filtered_results)} most recent competitions out of {len(results)} total"
+                else:
+                    filtered_data["results"] = results
+            elif not include_competition_results and not competition_id:
+                # Explicitly exclude results when not requested
+                filtered_data["_results_note"] = f"Competition results excluded (set include_competition_results=True to include). Total competitions: {person_data.get('numberOfCompetitions', 0)}"
+            
+            return filtered_data
+            
     except APIError as e:
         raise Exception(f"Failed to get person {wca_id}: {e}")
     except Exception as e:
