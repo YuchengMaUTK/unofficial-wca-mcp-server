@@ -174,3 +174,7 @@ dmypy.json
 *.temp
 temp/
 tmp/
+
+# IDE and development tool directories
+.kiro/
+.amazonq/
